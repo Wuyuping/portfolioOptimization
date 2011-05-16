@@ -22,7 +22,7 @@ function download_etf()
     clear IJH_mat;
     
     IJR_mat = fetching('IJR');
-    IJR_dat = convert_toDS(IJR_mat);
+    IJR = convert_toDS(IJR_mat);
     clear IJR_mat;
     
     IYY_mat = fetching('IYY');
