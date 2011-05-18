@@ -50,7 +50,7 @@ function GrowingPortfolio()
         cvx_begin        
             variable x1(n) % x1 fractional of portfolio, the optimization variable 
             minimize (quad_form(x1,sig)) %minimize the return variance x'*sig*x
-            dot(p_mean,x1) >= r_min;     % subject to minimum E(r) is 0.2% constraint
+            dot(p_mean,x1) >= r_min;     % subject to E(r) >= 0.2% constraint
             ones(1,n)*x1 ==1;            % must use all 100% investment budget 
             x1 >= 0;                     % no short position
         cvx_end
