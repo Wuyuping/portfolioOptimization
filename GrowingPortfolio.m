@@ -19,7 +19,7 @@ function GrowingPortfolio()
     k = 1000;       % end_index of the training set
     k2 = 1;         % begn index of the test set            
     
-    outfile = sprintf('PORTFOLIO%0.2f.mat',r_min);
+    outfile = sprintf('PORTFOLIO%0.3f.mat',r_min);
     B = input('Enter the budget (investment amount): '); 
     r_min = input('Enter Minimum expected return rate: '); 
     k  = input('Enter number of trading days from the begin of the dataset: '); 
