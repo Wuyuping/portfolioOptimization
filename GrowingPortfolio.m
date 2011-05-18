@@ -18,7 +18,8 @@ function GrowingPortfolio()
     r_min = 0.02;   % Minimum expected return rate in percentage     
     k = 1000;       % end_index of the training set
     k2 = 1;         % begn index of the test set            
-
+    
+    outfile = sprintf('PORTFOLIO%0.2f.mat',r_min);
     B = input('Enter the budget (investment amount): '); 
     r_min = input('Enter Minimum expected return rate: '); 
     k  = input('Enter number of trading days from the begin of the dataset: '); 
@@ -34,6 +35,7 @@ function GrowingPortfolio()
 
     % Actual return amount stored here
     R = zeros(nrows - k, n+4);
+    A = zeros(nrows - k, n);
 
     while  k < nrows
         % get training data from dayRateMat matrix
@@ -53,8 +55,11 @@ function GrowingPortfolio()
             x1 >= 0;                     % no short position
         cvx_end
 
+        assert(sum(isnan(x1)) == 0, 'Error. Can not allocate portfolio for day %d with minimum expected return %f \n', k, r_min);
+
         % X exact amount of portfolo = fractional * Budget
         X = x1.*B;
+        A(k2,:) = X';
         
         pre_price = get_price(ETF14, n, k);
         qty = X./pre_price;
@@ -82,8 +87,12 @@ function GrowingPortfolio()
     
     R = dataset({R, 'SPY', 'IJH','IJR','IYY','XLE', 'EWZ','EWJ','EWH',...
     'EEM','EZU','EFA','AGG','IAU','IYR', 'TOTAL', 'ESTIMATED', 'STD', 'BUDGET'});
-    
-    BACK_TEST.Result = R;  %#ok<STRNU>
+
+    A = dataset({A, 'SPY', 'IJH','IJR','IYY','XLE', 'EWZ','EWJ','EWH',...
+    'EEM','EZU','EFA','AGG','IAU','IYR'});
+
+    BACK_TEST.Result = R;  
+    BACK_TEST.Alloc = A; %#ok<STRNU>
     
     fprintf('Daily return for each day \n');
     disp(R);
@@ -97,7 +106,7 @@ function GrowingPortfolio()
     x = 1:size(y,1);
     plot(x,y);
     
-    save('PORTFOLIO_GROWTH','-v7.3','BACK_TEST'); 
+    save(outfile ,'-v7.3','BACK_TEST'); 
     
 end
 
