@@ -10,8 +10,12 @@
 % 'Volume'
 % 'Adj Close'
 
-function download() 
-
+function download_etf() 
+  
+  global y;
+  global start_date;
+  global end_date;
+  
   y = yahoo('http://download.finance.yahoo.com');
   start_date = 'Jan 31 2005';
   end_date = 'Aug 30 2011';
@@ -84,8 +88,9 @@ function datamat = fetching(etf_symbol)
   global y;
   global start_date;
   global end_date;
-  
+
   datamat = fetch(y, etf_symbol,{'Close', 'High', 'Low', 'Open', 'Volume', 'Adj Close'}, start_date, end_date);
+  
 end
 
 function myds = convert_toDS(data_mat)
