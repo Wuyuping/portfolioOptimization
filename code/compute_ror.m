@@ -1,7 +1,7 @@
 
 function compute_ror() 
     % compute daily rate of returns for 14 ETFs
-    load ETF14_Feb05_Aug11;
+    load ETF14_Feb05_Sep11;
     
     % SPY IJH	IJR	IYY	
     SPY = computeRate(SPY);
@@ -64,12 +64,13 @@ function compute_ror()
     ETF14.RateMat = dayRateMat;
     ETF14.RateSet = dayRateSet;
     
-    save('ROR14_Feb05_Aug11','-v7.3','ETF14');    
+    save('ROR14_Feb05_Sep11','-v7.3','ETF14');
 end
 
 function newdataset = computeRate(data) 
     [n, ~] = size(data);
     data.Prev_Adj_Close = [NaN; data.Adj_Close(1:n-1)];    
     data.Rate = 100*(data.Adj_Close - data.Prev_Adj_Close)./data.Prev_Adj_Close;
+    
     newdataset = data;
 end

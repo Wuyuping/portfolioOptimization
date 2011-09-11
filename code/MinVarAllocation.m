@@ -1,4 +1,4 @@
-load ROR14_Feb05_Dec10;
+load ROR14_Feb05_Sep11; 
 dayRateMat = ETF14.RateMat;
 dayRateMat(1,:)=[];
 
@@ -11,7 +11,7 @@ sig = cov(dayRateMat);
 % number of assets in the portfolio
 n = 14;
 
-% Budget (i.e. total investmed amount) 
+% Budget (i.e. total invested amount) 
 B = 10000;
 r_min = 20;
 

@@ -18,8 +18,8 @@ function download_etf()
   
   y = yahoo('http://download.finance.yahoo.com');
   start_date = 'Jan 31 2005';
-  end_date = 'Aug 30 2011';
-  save_file = 'ETF14_Feb05_Aug11.mat';
+  end_date = 'Sep 10 2011';
+  save_file = 'ETF14_Feb05_Sep11.mat';
 
   % SPY IJH IJR	IYY
   SPY_mat = fetching('SPY');
