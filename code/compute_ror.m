@@ -1,4 +1,3 @@
-
 function compute_ror() 
     % compute daily rate of returns for 14 ETFs
     load ETF14_Feb05_Sep11;
@@ -28,7 +27,7 @@ function compute_ror()
     % Combine rate into one datasdet
     dateVec = SPY.Date;
     [n, ~] = size(SPY);
-    dayRateMat = zeros(n,14);    
+    dayRateMat = zeros(n,14);
     dayRateMat(:,1) = SPY.Rate;
     dayRateMat(:,2) = IJH.Rate;
     dayRateMat(:,3) = IJR.Rate;
@@ -45,8 +44,10 @@ function compute_ror()
     dayRateMat(:,12) = AGG.Rate;
     dayRateMat(:,13) = IAU.Rate;
     dayRateMat(:,14) = IYR.Rate;
+    
     dayRateSet = dataset({dateVec,'Date'}, {dayRateMat, 'SPY', 'IJH','IJR','IYY','XLE', 'EWZ','EWJ','EWH','EEM','EZU','EFA','AGG','IAU','IYR'});
-       
+
+
     ETF14.SPY =   SPY;
     ETF14.IJH =   IJH;
     ETF14.IJR =   IJR;
@@ -61,8 +62,7 @@ function compute_ror()
     ETF14.AGG =   AGG;
     ETF14.IAU =   IAU;
     ETF14.IYR =   IYR;
-    ETF14.RateMat = dayRateMat;
-    ETF14.RateSet = dayRateSet;
+    ETF14.Rate = dayRateSet;
     
     save('ROR14_Feb05_Sep11','-v7.3','ETF14');
 end
@@ -70,7 +70,6 @@ end
 function newdataset = computeRate(data) 
     [n, ~] = size(data);
     data.Prev_Adj_Close = [NaN; data.Adj_Close(1:n-1)];    
-    data.Rate = 100*(data.Adj_Close - data.Prev_Adj_Close)./data.Prev_Adj_Close;
-    
+    data.Rate = 100*(data.Adj_Close - data.Prev_Adj_Close)./data.Prev_Adj_Close;    
     newdataset = data;
 end
