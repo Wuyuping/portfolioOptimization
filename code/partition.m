@@ -3,8 +3,10 @@
 
 function partition() 
   load ROR14_Feb05_Sep11;
+  load Variables;
   ETF14.Rate.volatile = compute_volatile(ETF14.Rate.Date);
   ETF14.Rate.volatile = ordinal(ETF14.Rate.volatile, {'low' 'medium' 'high'});
+  ETF14.Rate.Properties.VarDescription =  Variables(1:16,2);
   save('Partition_Feb05_Sep11','-v7.3','ETF14');
 end
 

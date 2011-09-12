@@ -63,7 +63,10 @@ function compute_ror()
     ETF14.IAU =   IAU;
     ETF14.IYR =   IYR;
     ETF14.Rate = dayRateSet;
+
     
+    load Variables; 
+    ETF14.Rate.Properties.VarDescription =  Variables(1:15,2);    
     save('ROR14_Feb05_Sep11','-v7.3','ETF14');
 end
 
