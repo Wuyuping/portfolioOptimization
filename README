@@ -1,3 +1,20 @@
+Variables
+    'SPY'         'SPDR S&P 500 ETF'                               [1x294 char]
+    'IJH'         'iShares S&P MidCap 400 Index (ETF)'             [1x745 char]
+    'IJR'         'iShares S&P SmallCap 600 Index (ETF)'           [1x877 char]
+    'IYY'         'iShares Dow Jones U.S. Index Fund (ETF)'        [1x777 char]
+    'XLE'         'Energy Select Sector SPDR (ETF)'                [1x522 char]
+    'EWZ'         'iShares MSCI Brazil Index (ETF)'                [1x689 char]
+    'EWJ'         'iShares MSCI Japan Index (ETF)'                 [1x939 char]
+    'EWH'         'iShares MSCI Hong Kong Index Fund (ETF)'                  []
+    'EEM'         'iShares MSCI Emerging Markets Indx (ETF)'                 []
+    'EZU'         'iShares MSCI EMU Index (ETF)'                             []
+    'EFA'         'iShares MSCI EAFE Index Fund (ETF)'             [1x737 char]
+    'AGG'         'iShares Lehman Aggregate Bond (ETF)'                      []
+    'IAU'         'iShares Gold Trust(ETF)'                        [1x971 char]
+    'IYR'         'iShares Dow Jones US Real Estate (ETF)'         [1x796 char]
+    'volatile'    'VOLATILITY S&P 500 (Chicago Options: ^VIX )'    [1x65  char]
+
 08-23-11
   1. Update data through 8/31/11 (with volume, use volume to weight the price changed)
   2. Compute rate of returns
@@ -8,7 +25,7 @@
     Find x so that x'Vx <= y (where y = specified risk)
     
 09-01-11
-  1. Partition the data into 3 periods of risks (low, medium, high valitility)
+  1. Partition the data into 3 periods of risks (low, medium, high VOLATILITY)
     -  Using ^VIX index 
   
   2. For each risk period compute the statistics
