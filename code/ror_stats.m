@@ -5,11 +5,13 @@ function ror_stats()
   load Partition_Feb05_Sep11;
 
   while (true) 
-      disp('1) compute stats for 3 volatility periods');
-      disp('9) box plots of return rate for 3 volatility periods');
+      disp(' 1) compute stats for 3 volatility periods');
+      disp(' 2) show stats for 3 volatility periods');
+      disp(' 3) export stats (to excel) for 3 volatility periods');
+      disp(' 9) box plots of return rate for 3 volatility periods');
       disp('-1) for exit');
 
-      option_id = input('Enter option id: '); 
+      option_id = input('Enter option id: ');
       
       switch option_id
         case -1
@@ -43,7 +45,7 @@ function compute_stats(data)
   data_vars = Variables(2:15,1);
   stats.datavars = data_vars;
   
-  stat_vars = {@mean, 'sem', @std, @min, @max, @range, @median, 'meanci', 'predci'};
+  stat_vars = {'mean', 'sem', 'std', 'min', 'max', 'range', 'median', 'meanci', 'predci'};
   stats.statvars = stat_vars;
   
   group = {'volatile'};
@@ -51,12 +53,51 @@ function compute_stats(data)
   
   volatile_stat = grpstats(data,group,stat_vars, 'DataVars',data_vars);
   volatile_stat(:,{'volatile'})=[];  
-  all_stat = grpstats(data,[],stat_vars, 'DataVars',data_vars);    
-  stats.stat = [volatile_stat; all_stat];
+  all_stat = grpstats(data,[],stat_vars, 'DataVars',data_vars);  
+  stat = [volatile_stat; all_stat];
   
-  low_corr = 
-  save('ror_feb05_sep11_stats','-v7.3','stats');
-  correctairspeed
+  for stat_var = stat_vars 
+    new_data_vars = strcat(stat_var, '_', data_vars);
+    new_data_vars{15} = 'GroupCount';
+    newdataset = stat(:, new_data_vars);
+    fname = char(strcat('stat_', stat_var));
+    stats.(fname) = newdataset;
+  end
+  
+  low_vol_dat = data(data.volatile=='low', data_vars);
+  low_cov = cov(double(low_vol_dat(2:end,:)));
+  low_cov_dataset = dataset({low_cov,data_vars{:}},'ObsNames',data_vars);  
+  stats.low_cov = low_cov_dataset;   
+  [~, low_corr] = cov2corr(low_cov);
+  low_corr_dataset = dataset({low_corr,data_vars{:}},'ObsNames',data_vars);
+  stats.low_corr = low_corr_dataset;
+  
+  med_vol_dat = data(data.volatile=='medium', data_vars);
+  med_cov = cov(double(med_vol_dat));  
+  med_cov_dataset = dataset({med_cov,data_vars{:}},'ObsNames',data_vars);
+  stats.med_cov = med_cov_dataset;
+  [~, med_corr] = cov2corr(med_cov);
+  med_corr_dataset = dataset({med_corr,data_vars{:}},'ObsNames',data_vars);
+  stats.med_corr = med_corr_dataset;
+
+  
+  hi_vol_dat = data(data.volatile=='high', data_vars);
+  hi_cov = cov(double(hi_vol_dat));
+  hi_cov_dataset = dataset({hi_cov,data_vars{:}},'ObsNames',data_vars);
+  stats.hi_cov = hi_cov_dataset;
+  [~, hi_corr] = cov2corr(hi_cov);
+  hi_corr_dataset = dataset({hi_corr,data_vars{:}},'ObsNames',data_vars);
+  stats.hi_corr = hi_corr_dataset;
+
+  all_dat = data(2:end, data_vars);
+  all_cov = cov(double(all_dat));
+  cov_dataset = dataset({all_cov,data_vars{:}},'ObsNames',data_vars);
+  stats.all_cov = cov_dataset;
+  [~, all_corr] = cov2corr(all_cov);
+  corr_dataset = dataset({all_corr,data_vars{:}},'ObsNames',data_vars);
+  stats.all_corr = corr_dataset;
+    
+  save('stats_feb05_sep11','-v7.3','stats');
 end
        
 
