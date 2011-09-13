@@ -18,6 +18,8 @@ function ror_stats()
           break;
         case 1
           compute_stats(ETF14.Rate);
+        case 3
+          export_stats();          
         case 9
           box_plots(ETF14.Rate);
         otherwise
@@ -100,4 +102,16 @@ function compute_stats(data)
   save('stats_feb05_sep11','-v7.3','stats');
 end
        
+function export_stats()
+  load stats_feb05_sep11;
+  
+  fnames=fieldnames(stats);
+  file_names = strcat(fnames, '.csv');
+  
+  for i=5:length(fnames)
+    mydataset = stats.(fnames{i});
+    file_name = file_names{i};
+    export(mydataset,'file',file_name,'Delimiter',',');
+  end
+end
 
