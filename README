@@ -1,22 +1,22 @@
 Variables
-    'Date'        'trade date'                                                                                           
-    'SPY'         'SPDR S&P 500 ETF'                                                                                     
-    'IJH'         'iShares S&P MidCap 400 Index (ETF)'                                                                   
-    'IJR'         'iShares S&P SmallCap 600 Index (ETF)'                                                                 
-    'IYY'         'iShares Dow Jones U.S. Index Fund (ETF)'                                                              
-    'XLE'         'Energy Select Sector SPDR (ETF)'                                                                      
-    'EWZ'         'iShares MSCI Brazil Index (ETF)'                                                                      
-    'EWJ'         'iShares MSCI Japan Index (ETF)'                                                                       
-    'EWH'         'iShares MSCI Hong Kong Index Fund (ETF)'                                                              
-    'EEM'         'iShares MSCI Emerging Markets Indx (ETF)'                                                             
-    'EZU'         'iShares MSCI EMU Index (ETF)'                                                                         
-    'EFA'         'iShares MSCI EAFE Index Fund (ETF)'                                                                   
-    'AGG'         'iShares Lehman Aggregate Bond (ETF)'                                                                  
-    'IAU'         'iShares Gold Trust(ETF)'                                                                              
-    'IYR'         'iShares Dow Jones US Real Estate (ETF)'                                                               
+    'Date'        'trade date'                                                                                                      []
+    'SPY'         'SPDR S&P 500 ETF'                                                                                      [1x294 char]
+    'IJH'         'iShares S&P MidCap 400 Index (ETF)'                                                                    [1x745 char]
+    'IJR'         'iShares S&P SmallCap 600 Index (ETF)'                                                                  [1x877 char]
+    'IYY'         'iShares Dow Jones U.S. Index Fund (ETF)'                                                               [1x777 char]
+    'XLE'         'Energy Select Sector SPDR (ETF)'                                                                       [1x522 char]
+    'EWZ'         'iShares MSCI Brazil Index (ETF)'                                                                       [1x689 char]
+    'EWJ'         'iShares MSCI Japan Index (ETF)'                                                                        [1x939 char]
+    'EWH'         'iShares MSCI Hong Kong Index Fund (ETF)'                                                                         []
+    'EEM'         'iShares MSCI Emerging Markets Indx (ETF)'                                                                        []
+    'EZU'         'iShares MSCI EMU Index (ETF)'                                                                                    []
+    'EFA'         'iShares MSCI EAFE Index Fund (ETF)'                                                                    [1x737 char]
+    'AGG'         'iShares Lehman Aggregate Bond (ETF)'                                                                             []
+    'IAU'         'iShares Gold Trust(ETF)'                                                                               [1x971 char]
+    'IYR'         'iShares Dow Jones US Real Estate (ETF)'                                                                [1x796 char]
+    'DJI'         'Dow Jones Industrial Average (^DJI)'                                                                             []
+    'SP500'       'S&P 500 INDEX,RTH (^GSPC)'                                                                                       []
     'volatile'    'VOLATILITY S&P 500 (Chicago Options: ^VIX )'    'low = ^VIX < 20, medium = ^VIX between 20 to 30, high = ^VIX > 30'
-    'DJI'         'Dow Jones Industrial Average (^DJI)'                                                                  
-    'SP500'       'S&P 500 INDEX,RTH (^GSPC)'                                                                            
 
 08-23-11
   1. Update data through 8/31/11 (with volume, use volume to weight the price changed)
