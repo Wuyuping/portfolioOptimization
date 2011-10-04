@@ -17,8 +17,8 @@ function download_etf()
   global end_date;
   
   y = yahoo('http://download.finance.yahoo.com');
-  start_date = 'Jan 31 2005';
-  end_date = 'Sep 10 2011';
+  start_date = '31-jan-2005';
+  end_date = '30-sep-2011';
   save_file = 'ETF14_Feb05_Sep11.mat';
 
   % SPY IJH IJR	IYY
@@ -81,6 +81,14 @@ function download_etf()
   IYR = convert_toDS(IYR_mat);
   clear IYR_mat;    
 
+  DJI_mat = fetching('^DJI');
+  DJI = convert_toDS(DJI_mat);
+  clear DJI_mat;    
+
+  SP500_mat = fetching('^GSPC');
+  SP500 = convert_toDS(SP500_mat);
+  clear SP500_mat;
+  
   save(save_file);
 end
 
