@@ -1,13 +1,13 @@
 % Partition the data into 3 sets using ^VIX index
-% ETF14.Rate.volatile = 1, 2, 3 
+% ETF.Rate.volatile = 1, 2, 3 
 
 function partition() 
-  load ROR14_Feb05_Sep11;
+  load ROR_Feb05_Sep11;
   load Variables;
-  ETF14.Rate.volatile = compute_volatile(ETF14.Rate.Date);
-  ETF14.Rate.volatile = ordinal(ETF14.Rate.volatile, {'low' 'medium' 'high'});
-  ETF14.Rate.Properties.VarDescription =  Variables(1:16,2);
-  save('Partition_Feb05_Sep11','-v7.3','ETF14');
+  ETF.Rate.volatile = compute_volatile(ETF.Rate.Date);
+  ETF.Rate.volatile = ordinal(ETF.Rate.volatile, {'low' 'medium' 'high'});
+  ETF.Rate.Properties.VarDescription =  Variables(1:18,2);
+  save('Partition_Feb05_Sep11','-v7.3','ETF');
 end
 
 function volatile = compute_volatile(trade_dates)

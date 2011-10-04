@@ -17,11 +17,11 @@ function ror_stats()
         case -1
           break;
         case 1
-          compute_stats(ETF14.Rate);
+          compute_stats(ETF.Rate);
         case 3
           export_stats();          
         case 9
-          box_plots(ETF14.Rate);
+          box_plots(ETF.Rate);
         otherwise
           continue;
       end
@@ -29,7 +29,7 @@ function ror_stats()
 end
 
 function box_plots(data)
-  for i = 2:15    
+  for i = 2:17    
     h = figure; 
     boxplot(double(data(:,i)), data.volatile);
     title(data.Properties.VarDescription{i}, 'FontSize',20,'FontWeight','b');
@@ -44,7 +44,7 @@ function compute_stats(data)
   
   stats.data =  data;
   
-  data_vars = Variables(2:15,1);
+  data_vars = Variables(2:17,1);
   stats.datavars = data_vars;
   
   stat_vars = {'mean', 'sem', 'std', 'min', 'max', 'range', 'median', 'meanci', 'predci'};

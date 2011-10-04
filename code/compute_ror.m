@@ -1,7 +1,9 @@
 function compute_ror() 
     % compute daily rate of returns for 14 ETFs
-    load ETF14_Feb05_Sep11;
-    
+    load ETF_Feb05_Sep11;
+    load Variables; 
+    data_vars = Variables(2:17,1);
+
     % SPY IJH	IJR	IYY	
     SPY = computeRate(SPY);
     IJH = computeRate(IJH);
@@ -20,14 +22,16 @@ function compute_ror()
     EFA = computeRate(EFA);
     AGG = computeRate(AGG);
 
-    % IAU	IYR    
+    % IAU	IYR DJI SP500    
     IAU = computeRate(IAU);
-    IYR = computeRate(IYR);
+    IYR = computeRate(IYR);    
+    DJI = computeRate(DJI);
+    SP500 = computeRate(SP500);
     
     % Combine rate into one datasdet
     dateVec = SPY.Date;
     [n, ~] = size(SPY);
-    dayRateMat = zeros(n,14);
+    dayRateMat = zeros(n,16);
     dayRateMat(:,1) = SPY.Rate;
     dayRateMat(:,2) = IJH.Rate;
     dayRateMat(:,3) = IJR.Rate;
@@ -44,30 +48,31 @@ function compute_ror()
     dayRateMat(:,12) = AGG.Rate;
     dayRateMat(:,13) = IAU.Rate;
     dayRateMat(:,14) = IYR.Rate;
+    dayRateMat(:,15) = DJI.Rate;
+    dayRateMat(:,16) = SP500.Rate;
     
-    dayRateSet = dataset({dateVec,'Date'}, {dayRateMat, 'SPY', 'IJH','IJR','IYY','XLE', 'EWZ','EWJ','EWH','EEM','EZU','EFA','AGG','IAU','IYR'});
+    dayRateSet = dataset({dateVec,'Date'}, {dayRateMat, data_vars{:}});
 
-
-    ETF14.SPY =   SPY;
-    ETF14.IJH =   IJH;
-    ETF14.IJR =   IJR;
-    ETF14.IYY =   IYY;
-    ETF14.XLE =   XLE;
-    ETF14.EWZ =   EWZ;
-    ETF14.EWJ =   EWJ;
-    ETF14.EWH =   EWH;
-    ETF14.EEM =   EEM;
-    ETF14.EZU =   EZU;
-    ETF14.EFA =   EFA;
-    ETF14.AGG =   AGG;
-    ETF14.IAU =   IAU;
-    ETF14.IYR =   IYR;
-    ETF14.Rate = dayRateSet;
-
+    ETF.SPY =   SPY;
+    ETF.IJH =   IJH;
+    ETF.IJR =   IJR;
+    ETF.IYY =   IYY;
+    ETF.XLE =   XLE;
+    ETF.EWZ =   EWZ;
+    ETF.EWJ =   EWJ;
+    ETF.EWH =   EWH;
+    ETF.EEM =   EEM;
+    ETF.EZU =   EZU;
+    ETF.EFA =   EFA;
+    ETF.AGG =   AGG;
+    ETF.IAU =   IAU;
+    ETF.IYR =   IYR;
+    ETF.DJI =   DJI;
+    ETF.SP500 =   SP500;    
+    ETF.Rate = dayRateSet;
     
-    load Variables; 
-    ETF14.Rate.Properties.VarDescription =  Variables(1:15,2);    
-    save('ROR14_Feb05_Sep11','-v7.3','ETF14');
+    ETF.Rate.Properties.VarDescription =  Variables(1:17,2);
+    save('ROR_Feb05_Sep11','-v7.3','ETF');
 end
 
 function newdataset = computeRate(data) 
