@@ -2,12 +2,16 @@
 % ETF.Rate.volatile = 1, 2, 3 
 
 function partition() 
-  load ROR_Feb05_Sep11;
   load Variables;
-  ETF.Rate.volatile = compute_volatile(ETF.Rate.Date);
-  ETF.Rate.volatile = ordinal(ETF.Rate.volatile, {'low' 'medium' 'high'});
-  ETF.Rate.Properties.VarDescription =  Variables(1:18,2);
-  save('Partition_Feb05_Sep11','-v7.3','ETF');
+  period     = input('Period (d/w/m): ', 's'); 
+  loadfile = strcat(period,'return');
+  load (loadfile);      
+  
+  savefile = strcat(period,'partition');  
+
+  asset.ror.volatile = compute_volatile(asset.ror.Date);
+  asset.ror.volatile  = ordinal(asset.ror.volatile, {'low' 'medium' 'high'});
+  save(savefile,'-v7.3','asset');
 end
 
 function volatile = compute_volatile(trade_dates)
@@ -31,12 +35,12 @@ function volatile = compute_volatile(trade_dates)
   may10 = datenum('05/01/2010','mm/dd/yyyy');
   sep10 = datenum('09/30/2010','mm/dd/yyyy');
   july11 = datenum('07/01/2011','mm/dd/yyyy');
-  sep11 = datenum('09/10/2011','mm/dd/yyyy');
+  sep11 = datenum('09/30/2011','mm/dd/yyyy');
   
   n = size(trade_dates,1);
   volatile = zeros(n,1);
   for i = 1:n
-    date_num = datenum(trade_dates(i));
+    date_num = datenum(trade_dates(i,:));
     if (date_num <= june07 || (date_num >=  oct10 && date_num <= june11))
       volatile(i) = 1;
     elseif ((date_num >= july07 && date_num <= aug08) ...

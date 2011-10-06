@@ -12,12 +12,14 @@ function compute_ror()
     symbol = data_vars{i};    
     rds.(symbol) = computeRate(asset.(symbol));
   end
+  % remove NaN row
+  rds(1,:) = [];
   asset.ror = rds;
   save(savefile, 'asset');
 end
 
 function ror = computeRate(data) 
-    n = size(data,1);
-    prevAdjClose = [NaN; data.AdjClose(1:n-1)];
-    ror = (data.AdjClose - prevAdjClose)./prevAdjClose;
+  n = size(data,1);
+  prevAdjClose = [NaN; data.AdjClose(1:n-1)];
+  ror = (data.AdjClose - prevAdjClose)./prevAdjClose;
 end
