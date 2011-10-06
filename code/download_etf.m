@@ -14,6 +14,7 @@ function download_etf()
   datafile = strcat(period,'data');
   asset.start_date = start_date;
   asset.end_date = end_date;
+  asset.period = period;
   
   for i = 1:size(data_vars,1)
     symbol = data_vars{i};
