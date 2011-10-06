@@ -10,7 +10,7 @@ function download_etf()
   disp('Please enter date range of the historical data ');
   start_date = input('From date (31-jan-2005):  ', 's');
   end_date   = input('To date   (30-sep-2011):  ', 's');
-  period     = input('Period    (d/w/m):        ', 's');  
+  period     = input('Period    (d/w/m):      ', 's');  
   datafile = strcat(period,'data');
   asset.start_date = start_date;
   asset.end_date = end_date;
@@ -36,7 +36,7 @@ function myds = download(varargin)
   period = varargin{6};
   dataset_fields = varargin{7};
   
-  datamat    = fetch(y, symbol,download_fields, start_date, end_date, period);
+  datamat = fetch(y, symbol,download_fields, start_date, end_date, period);
   n = size(datamat, 1);
   reverse_idx = n : -1 : 1;
   datamat = datamat(reverse_idx, :);
