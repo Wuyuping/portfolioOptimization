@@ -6,20 +6,17 @@ function compute_ror()
   load (loadfile);      
 
   savefile = strcat(period,'return');  
-  rds = dataset({asset.SPY.Date, 'Date'});
   
   for i = 1:size(data_vars,1)
-    symbol = data_vars{i};    
-    rds.(symbol) = computeRate(asset.(symbol));
+    symbol = data_vars{i};
+    asset.(symbol).ror = computeRate(asset.(symbol));
+    asset.(symbol)(1,:) = [];
   end
-  % remove NaN row
-  rds(1,:) = [];
-  asset.ror = rds;
   save(savefile, 'asset');
 end
 
 function ror = computeRate(data) 
   n = size(data,1);
-  prevAdjClose = [NaN; data.AdjClose(1:n-1)];
-  ror = (data.AdjClose - prevAdjClose)./prevAdjClose;
+  prevAdjClose = [NaN;data.AdjClose(1:n-1)];
+  ror = (100*(data.AdjClose - prevAdjClose))./prevAdjClose;
 end
