@@ -41,5 +41,4 @@ function myds = download(varargin)
   reverse_idx = n : -1 : 1;
   datamat = datamat(reverse_idx, :);
   myds = dataset({datamat,dataset_fields{:}});
-  myds.Date = datestr(myds.Date, 'mm/dd/yy');  
 end
