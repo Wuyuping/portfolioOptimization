@@ -9,14 +9,15 @@ function compute_ror()
   
   for i = 1:size(data_vars,1)
     symbol = data_vars{i};
-    asset.(symbol).ror = computeRate(asset.(symbol));
+    asset.(symbol) = computeRate(asset.(symbol));
     asset.(symbol)(1,:) = [];
   end
   save(savefile, 'asset');
 end
 
-function ror = computeRate(data) 
+function data = computeRate(data)
   n = size(data,1);
-  prevAdjClose = [NaN;data.AdjClose(1:n-1)];
-  ror = (100*(data.AdjClose - prevAdjClose))./prevAdjClose;
+  data.prevDate = [NaN;data.Date(1:n-1)];
+  data.prevAdjClose = [NaN;data.AdjClose(1:n-1)];
+  data.ror = (100*(data.AdjClose - data.prevAdjClose))./data.prevAdjClose;
 end
