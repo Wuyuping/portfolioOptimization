@@ -4,13 +4,13 @@
 function partition() 
   load Variables;
   period     = input('Period (d/w/m): ', 's'); 
-  loadfile = strcat(period,'return');
+  loadfile = strcat(period,'Returns');
   load (loadfile);      
   
-  savefile = strcat(period,'partition');  
+  savefile = strcat(period,'partition');
 
-  asset.ror.volatile = compute_volatile(asset.ror.Date);
-  asset.ror.volatile  = ordinal(asset.ror.volatile, {'low' 'medium' 'high'});
+  asset.Return.volatile = compute_volatile(asset.Return.Date);
+  asset.Return.volatile  = ordinal(asset.Return.volatile, {'low' 'medium' 'high'});
   save(savefile,'-v7.3','asset');
 end
 
@@ -21,7 +21,7 @@ function volatile = compute_volatile(trade_dates)
   %                  :  Dec 2009 - Apr 2010
   %   Hi  VOLATILITY :  Sep 2008 - Nov 2009
   %                  :  May 2010 - Sep 2010
-  %                  :  July 2011 - Sep 2011
+  %                  :  July 2011 - Oct 2011
   
   june07 = datenum('06/30/2007','mm/dd/yyyy');
   oct10 = datenum('10/01/2010','mm/dd/yyyy');
@@ -35,12 +35,12 @@ function volatile = compute_volatile(trade_dates)
   may10 = datenum('05/01/2010','mm/dd/yyyy');
   sep10 = datenum('09/30/2010','mm/dd/yyyy');
   july11 = datenum('07/01/2011','mm/dd/yyyy');
-  sep11 = datenum('09/30/2011','mm/dd/yyyy');
+  oct11 = datenum('10/10/2011','mm/dd/yyyy');
   
   n = size(trade_dates,1);
   volatile = zeros(n,1);
   for i = 1:n
-    date_num = datenum(trade_dates(i,:));
+    date_num = trade_dates(i);
     if (date_num <= june07 || (date_num >=  oct10 && date_num <= june11))
       volatile(i) = 1;
     elseif ((date_num >= july07 && date_num <= aug08) ...
@@ -48,7 +48,7 @@ function volatile = compute_volatile(trade_dates)
       volatile(i) = 2;
     elseif ((date_num >= sep08 && date_num <= nov09) ...
         || (date_num >= may10 && date_num <= sep10) ...
-        ||  (date_num >= july11 && date_num <= sep11))
+        ||  (date_num >= july11 && date_num <= oct11))
       volatile(i) = 3;
     else 
       volatile(i) = NaN;
