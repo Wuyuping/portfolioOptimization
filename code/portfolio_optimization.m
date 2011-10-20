@@ -21,7 +21,7 @@ elseif strcmpi(period, 'm')
 end
 
 AssetList = asset.Return.Properties.VarNames(2:end-3);
-pReturns = double(asset.Return(:,2:end-3));
+pReturns = double(asset.Return(:,AssetList));
 Date = asset.Return.Date;
 
 DJReturns = asset.Return.DJI;
@@ -78,8 +78,11 @@ display(ret);
 % Given the range of risks and returns, show the location of portfolios on the efficient
 % frontier that have target values for return and risk 
 
-targetReturn = input('Enter targeted return');
-targetRisk = input('Enter targeted risk');
+targetRetLabel = strcat('Enter ', period, ' targeted return: ');
+targetReturn = input(targetRetLabel);
+
+targetRskLabel = strcat('Enter ', period, ' targeted risk: ');
+targetRisk = input(targetRskLabel);
 
 weight1 = p.estimateFrontierByReturn(targetReturn);
 [arsk, aret] = p.estimatePortMoments(weight1);
@@ -88,7 +91,9 @@ weight2 = p.estimateFrontierByRisk(targetRisk);
 [brsk, bret] = p.estimatePortMoments(weight2);
 
 % Plot efficient frontier with targeted portfolios
-mv_plot('Efficient Frontier with Targeted Portfolios', ...
+
+targetPortTitle = strcat(period, 'Efficient Frontier with Targeted Portfolios');
+mv_plot(targetPortTitle, ...
 	{'line', prsk, pret}, ...
 	{'scatter', [djRsk, spRsk, ersk], [djRet, spRet, eret], {'Dow Jones', 'SP 500', 'Equal'}}, ...
 	{'scatter', arsk, aret, {sprintf('%g%% Return',targetReturn)}}, ...
@@ -97,9 +102,9 @@ mv_plot('Efficient Frontier with Targeted Portfolios', ...
 
 %% Setup dataset containing portfolio weights and asset names
 targetRetPortfolios = dataset({100*weight1(weight1 > 0),'Weight'}, 'obsnames', p.AssetList(weight1 > 0));
-fprintf('Portfolio with %g%% target return\n', targetReturn);
+fprintf('%s portfolio with %g%% target return\n', period, targetReturn);
 disp(targetRetPortfolios);
 
 targetRiskPortfolios = dataset({100*weight2(weight2 > 0),'Weight'}, 'obsnames', p.AssetList(weight2 > 0));
-fprintf('Portfolio with %g%% target risk\n', targetRisk);
+fprintf('%s portfolio with %g%% target risk\n', period, targetRisk);
 disp(targetRiskPortfolios);
