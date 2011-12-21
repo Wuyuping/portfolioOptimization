@@ -1,0 +1,11 @@
+WEB
+1
+http://finance.yahoo.com/q?s=GM
+
+Selection=14
+Formatting=None
+PreFormattedTextToColumns=True
+ConsecutiveDelimitersAsOne=True
+SingleBlockTextImport=False
+DisableDateRecognition=False
+DisableRedirections=False
