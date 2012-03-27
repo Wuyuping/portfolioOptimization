@@ -1,11 +1,8 @@
-%% Optimizing asset allocation
-%  
-% For a given "risk tolerance" q, with domain [0, inf), 
-% optimizing the allocation by constructing the efficient frontier.
-
-% The frontier is found by minimizing the following function:
-%       w'*SIGMA*w - q*r'w
-%
+%% Optimizing asset allocation for 14 etfs with constraints:
+% - 0% EWZ 
+% - 0% AGG
+% - 5% IAU 
+  
 
 % Setup data
 period     = input('Period (d/w/m): ', 's');
@@ -20,7 +17,13 @@ elseif strcmpi(period, 'm')
   period = 'Monthly';  
 end
 
-AssetList = asset.Return.Properties.VarNames(2:end-3);
+% exclude 'Date' 'EWZ'  'DJI' 'SP500' 'volatile' fields from Return dataset    
+AssetIndex = ones(18,1);
+excluded = [1,7,13, 16,17,18];
+AssetIndex(excluded) = 0;
+AssetIndex = logical(AssetIndex);
+
+AssetList = asset.Return.Properties.VarNames(AssetIndex);
 pReturns = double(asset.Return(:,AssetList));
 Date = asset.Return.Date;
 
@@ -36,7 +39,6 @@ spRet = mean(SP500Returns);
 spRsk = std(SP500Returns);   
 stat = vertcat(stat, dataset({cellstr('SP 500'), 'Portfolio'},{spRet, 'Return'}, {spRsk, 'Risk'}) );
 
-
 % Create a Portfolio object and estimate the mean and covariance of asset returns
 p = Portfolio('AssetList', AssetList);
 p = p.estimateAssetMoments(pReturns);
@@ -46,31 +48,34 @@ p = p.setInitPort(1/p.NumAssets);
 [ersk, eret] = p.estimatePortMoments(p.InitPort);
 stat = vertcat(stat, dataset({cellstr('Equal-weight'), 'Portfolio'},{eret, 'Return'}, {ersk, 'Risk'}) );
 
+
 % Plot the distribution of risk and return for the assets in the
 % universe along with Dow Jones, SP500, and equal-weight risks and returns.
-title = strcat(period, ' Returns vs Risk ');
-mv_plot(title, ...
-	{'scatter', djRsk, djRet, {'Down Jones'}}, ...
-	{'scatter', spRsk, spRet, {'SP 500'}}, ...
-	{'scatter', ersk, eret, {'Equal'}}, ...
-	{'scatter', sqrt(diag(p.AssetCovar)), p.AssetMean, p.AssetList, '.r'});
+% title = strcat(period, ' Returns vs Risk ');
+% mv_plot(title, ...
+% 	{'scatter', djRsk, djRet, {'Down Jones'}}, ...
+% 	{'scatter', spRsk, spRet, {'SP 500'}}, ...
+% 	{'scatter', ersk, eret, {'Equal'}}, ...
+% 	{'scatter', sqrt(diag(p.AssetCovar)), p.AssetMean, p.AssetList, '.r'});
 
-stat = vertcat(stat, dataset({p.AssetList', 'Portfolio'},{p.AssetMean, 'Return'}, {sqrt(diag(p.AssetCovar)), 'Risk'}) );
-disp(stat);
-pause;
-
-k = input('Enter number of optimal portfolios: ');
 
 % Set up a portfolio optimization problem using setDefaultConstraints method.
 % here fully-invested long-only portfolios . 
+
 p = p.setDefaultConstraints;
 
-% Estimate the efficient frontier (50 efficient portfolios) 
+A = [ ones(1,10), 0, 1 ];
+b = 0.95;
+p = p.setEquality(A, b);
+
+% Estimate the efficient frontier 
+k = input('Enter number of optimal portfolios: ');
 pwgt = p.estimateFrontier(k);
 
 % estimatePortMoments estimates risks and returns for portfolios. 
 [prsk, pret] = p.estimatePortMoments(pwgt);
 
+stat = vertcat(stat, dataset({p.AssetList', 'Portfolio'},{p.AssetMean, 'Return'}, {sqrt(diag(p.AssetCovar)), 'Risk'}) );
 title = strcat(period, ' Optimal Portfolios vs. Market vs. Equal-weight ');
 % mv_plot(title, ...
 %   	{'line', prsk, pret}, ...
@@ -82,13 +87,12 @@ fmt  = cell(1,k);
 for i = 1:k
   fmt(1,i) = {num2str(i)};
 end
-
 mv_plot(title, ...
 	{'line', prsk, pret}, ...
 	{'scatter', [djRsk, spRsk, ersk], [djRet, spRet, eret], {'Dow Jones', 'SP 500', 'Equal'}}, ...
 	{'scatter', prsk, pret, fmt}, ...
 	{'scatter', sqrt(diag(p.AssetCovar)), p.AssetMean, p.AssetList, '.r'});
-  
+
 
 for i = 1:k
   optimalWeight =  pwgt(:,i);
@@ -104,10 +108,11 @@ export(stat,'file',file_name,'Delimiter',',');
 display(stat);
 pause;
 
+
 %% Find a portfolio with a targeted return and targeted risk
 % Given the range of risks and returns, show the location of portfolios on the efficient
 % frontier that have target values for return and risk 
-[rsk, ret] = p.estimatePortMoments(p.estimateFrontierLimits);
+
 targetRetLabel = strcat('Enter ', period, ' targeted return: ');
 targetReturn = input(targetRetLabel);
 
@@ -121,6 +126,7 @@ weight2 = p.estimateFrontierByRisk(targetRisk);
 [brsk, bret] = p.estimatePortMoments(weight2);
 
 % Plot efficient frontier with targeted portfolios
+
 targetPortTitle = strcat(period, 'Efficient Frontier with Targeted Portfolios');
 mv_plot(targetPortTitle, ...
 	{'line', prsk, pret}, ...

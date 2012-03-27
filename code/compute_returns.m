@@ -1,13 +1,11 @@
-%% Deprecated. Should use compute_returns script
-
-function compute_ror()   
+function compute_returns()   
   load Variables; 
   data_vars = Variables(2:17,1);  
   period     = input('Period (d/w/m): ', 's'); 
   loadfile = strcat(period,'data');
   load (loadfile);      
 
-  savefile = strcat(period,'Return');
+  savefile = strcat(period,'Returns');
   
   for i = 1:size(data_vars,1)
     symbol = data_vars{i};
@@ -17,9 +15,9 @@ function compute_ror()
   save(savefile, 'asset');
 end
 
+
 function data = computeRate(data)
-  n = size(data,1);
-  data.prevDate = [NaN;data.Date(1:n-1)];
-  data.prevAdjClose = [NaN;data.AdjClose(1:n-1)];
-  data.ror = (100*(data.AdjClose - data.prevAdjClose))./data.prevAdjClose;
+  ret = 100*price2ret(data.AdjClose);
+  data.ror= [NaN;ret];
+  data.Return = [NaN;ret];
 end
