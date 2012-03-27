@@ -1,7 +1,7 @@
 %% download yahoo data 
 % 
 
-function fetchData(symbols, start_date, end_date, period)    
+function plot_data = fetchData(symbols, start_date, end_date, period)    
   y = yahoo('http://download.finance.yahoo.com');
   download_fields = {'Close', 'High', 'Low', 'Open', 'Volume', 'Adj Close'};
   dataset_fields  = ['Date', download_fields]; 
@@ -9,11 +9,13 @@ function fetchData(symbols, start_date, end_date, period)
   asset.start_date = start_date;
   asset.end_date = end_date;
   asset.period = period;
+  plot_data = [];
   
   for i=1:length(symbols)
     symbol = symbols{i};
     myds = download(y, symbol,download_fields, start_date, end_date, period, dataset_fields);
     asset.(symbol) = myds;
+    plot_data(:,i) = myds.AdjClose;
   end  
   asset.DJI = download(y, '^DJI',download_fields, start_date, end_date, period, dataset_fields);
   asset.SP500 = download(y, '^GSPC',download_fields, start_date, end_date, period, dataset_fields);

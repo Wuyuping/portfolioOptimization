@@ -83,7 +83,10 @@ function downloadBtn_Callback(hObject, eventdata, handles)
   end_date = get(handles.toTxt, 'String');
   period_str = {'d', 'w', 'm'};
   period = period_str{get(handles.periodOpt, 'Value')};
-  fetchData(symbols, start_date, end_date, period);
+  plot_data = fetchData(symbols, start_date, end_date, period);
+  
+  plot(plot_data);
+  legend(symbols);
   
 function symbol_Callback(hObject, eventdata, handles)
 % hObject    handle to symbol (see GCBO)
